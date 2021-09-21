@@ -7,12 +7,10 @@ const Home: React.FC = () => {
     const history = useHistory();
 
     const createButton = () => {
-      console.log("Create");
       history.push("/create-room");
     }
 
     const joinButton = () => {
-      console.log("Join");
       history.push("/join-room");
     }
 

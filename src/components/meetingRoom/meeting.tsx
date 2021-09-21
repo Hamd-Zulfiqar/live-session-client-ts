@@ -98,7 +98,6 @@ class Meeting extends React.Component <MyProps, MyState>{
         video: this.state.settings.video
       }
     });
-    console.log(this.state);
     this.publisher.current?.getPublisher().publishAudio(this.state.settings.audio);
   }
 
@@ -109,7 +108,6 @@ class Meeting extends React.Component <MyProps, MyState>{
         video: !this.state.settings.video
       }
     });
-    console.log(this.state);
     this.publisher.current?.getPublisher().publishVideo(this.state.settings.video);
   }
 
@@ -184,8 +182,6 @@ class Meeting extends React.Component <MyProps, MyState>{
                 <ButtonGroup>
                   <Button onClick={this.toggleAudio}>Toggle Audio</Button>
                   <Button onClick={this.toggleVideo}>Toggle Video</Button>
-                  <Button onClick={this.display}>Display</Button>
-                  <Button onClick={this.displayState}>Display State</Button>
                 </ButtonGroup>
               </Row>
               <Row>
@@ -201,7 +197,7 @@ class Meeting extends React.Component <MyProps, MyState>{
             <Col sm={4} className="outline-primary">
               <h5 className="m-3">Live Chat</h5>
               <div id="chatbox" className="container-half border border-primary">
-                <p>Hamd: this is a template message6</p>
+                <p>Sender_Name: this is a template message</p>
               </div>
               <InputGroup className="mt-3 mb-3">
                 <InputGroup.Text>Message:</InputGroup.Text>

@@ -37,7 +37,6 @@ function Wait() {
             await localStorage.setItem("password", data.password);
             await localStorage.setItem("room", location.state.data);
             await localStorage.setItem("name", location.state.name);
-            console.log("Local Storage SET!");
 
             const Location = {
                 pathname: '/room',
