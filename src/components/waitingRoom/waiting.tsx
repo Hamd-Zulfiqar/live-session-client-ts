@@ -19,19 +19,36 @@ function Wait() {
     useEffect(() => {
         let data: CreateResponse;
         async function generatingRoom(operation:string) {
-            if(operation === 'create')
+            if(operation === 'create'){
                 data = await CreateRoom(location.state.data);
-            else
+                if(!data.status){
+                    history.goBack();
+                }
+            }
+            else{
                 data = await JoinRoom(location.state.data);
+                if(!data.status){
+                    history.goBack();
+                }
+            }
 
-            localStorage.setItem("session", data.sessionId);
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("password", data.password);
-            localStorage.setItem("room", location.state.data);
+            await localStorage.setItem("session", data.sessionId);
+            await localStorage.setItem("token", data.token);
+            await localStorage.setItem("password", data.password);
+            await localStorage.setItem("room", location.state.data);
+            await localStorage.setItem("name", location.state.name);
+            console.log("Local Storage SET!");
+
+            const Location = {
+                pathname: '/room',
+                state: {
+                    name: location.state.name
+                }
+            };
+            history.push(Location);
         }
         generatingRoom(location.state.operation);
-        history.push("/room");
-    },);
+    },[]);
 
   return (
     <div className="Wait d-flex align-items-center justify-content-center container-center">

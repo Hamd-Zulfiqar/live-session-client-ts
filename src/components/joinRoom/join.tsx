@@ -62,7 +62,7 @@ function Join() {
                     </Col>
                 </Form.Group>
 
-                <Button className="mt-3" size="lg">Join Room!</Button>
+                <Button className="mt-3" size="lg"  onClick={join}>Join Room!</Button>
             </Form>
         </Container>
     </div>

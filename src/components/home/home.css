@@ -1,3 +1,7 @@
 .container-center {
   min-height: 75vh !important;
 }
+
+.container-half {
+  min-height: 50vh !important;
+}

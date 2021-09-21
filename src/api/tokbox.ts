@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CreateResponse } from "../types/tokbox";
+import { CreateResponse, ErrorResponse } from "../types/tokbox";
 
 const opentokServerPath = 'http://localhost:4000/api/v1/room/';
 
@@ -18,23 +18,37 @@ export async function CreateRoom(room: string): Promise<CreateResponse> {
             },
         });
 
-        const data: CreateResponse = {
-            apiKey: response.data.apiKey,
-            sessionId: response.data.sessionId,
-            token: response.data.token,
-            password: response.data.password
+        if(response.status == 200){
+            const data: CreateResponse = {
+                status: true,
+                apiKey: response.data.apiKey,
+                sessionId: response.data.sessionId,
+                token: response.data.token,
+                password: response.data.password
+            };
+            await delay(3000);
+            return data;
+        } else {
+            const data: CreateResponse = {
+                status: false,
+                apiKey: '',
+                sessionId: '',
+                token: response.data.message,
+                password: ''
+            };
+            await delay(3000);
+            return data;
         }
 
-        await delay(3000);
-        return data;
     } catch (error) {
       console.error(error);
       const temp: CreateResponse = {
+          status: false,
           apiKey: '',
           sessionId: '',
           token: '',
           password: ''
-      }
+      };
       return temp;
     }
 }
@@ -50,23 +64,36 @@ export async function JoinRoom(password: string): Promise<CreateResponse> {
             },
         });
 
-        const data: CreateResponse = {
-            apiKey: response.data.apiKey,
-            sessionId: response.data.sessionId,
-            token: response.data.token,
-            password: response.data.password
+        if(response.status == 200){
+            const data: CreateResponse = {
+                status: true,
+                apiKey: response.data.apiKey,
+                sessionId: response.data.sessionId,
+                token: response.data.token,
+                password: response.data.password
+            };
+            await delay(3000);
+            return data;
+        } else {
+            const data: CreateResponse = {
+                status: false,
+                apiKey: '',
+                sessionId: '',
+                token: response.data.message,
+                password: ''
+            };
+            await delay(3000);
+            return data;
         }
-
-        await delay(3000);
-        return data;
     } catch (error) {
-      console.error(error);
-      const temp: CreateResponse = {
-          apiKey: '',
-          sessionId: '',
-          token: '',
-          password: ''
-      }
-      return temp;
+        console.error(error);
+        const temp: CreateResponse = {
+            status: false,
+            apiKey: '',
+            sessionId: '',
+            token: '',
+            password: ''
+        };
+        return temp;
     }
 }
