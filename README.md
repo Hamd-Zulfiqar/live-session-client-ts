@@ -1,46 +1,80 @@
-# Getting Started with Create React App
+<h1>Live Session Client Application</h1>
+<p>This project is the client side of the Live Session Backend Application (deployed on https://live-session-backend-ts.herokuapp.com/). This is a react application which uses Typescript and the purpose is to use all the endpoints on the backend application and see them in action</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h2>Project Directory Structure</h2>
 
-## Available Scripts
+```
+.
+├── package.json
+├── package-lock.json
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   └── robots.txt
+├── README.md
+├── src
+│   ├── api
+│   │   └── tokbox.ts
+│   ├── App.test.tsx
+│   ├── App.tsx
+│   ├── components
+│   │   ├── createRoom
+│   │   │   └── create.tsx
+│   │   ├── header
+│   │   │   └── header.tsx
+│   │   ├── home
+│   │   │   ├── home.css
+│   │   │   └── home.tsx
+│   │   ├── joinRoom
+│   │   │   └── join.tsx
+│   │   ├── meetingRoom
+│   │   │   ├── meeting.tsx
+│   │   │   └── message.tsx
+│   │   └── waitingRoom
+│   │       └── waiting.tsx
+│   ├── config
+│   ├── index.css
+│   ├── index.tsx
+│   ├── react-app-env.d.ts
+│   ├── reportWebVitals.ts
+│   ├── setupTests.ts
+│   └── types
+│       └── tokbox.ts
+└── tsconfig.json
 
-In the project directory, you can run:
+```
 
-### `npm start`
+<h2>Project Architecture and Design</h2>
+<p>The scope of this project has been defined to expand every now and then with the addition of newer service providers. The goal was to implement a client for tokbox service only at the moment as it's basic backend implementation has been completed.</p>
+<p>Most of the Applciation is straight forward following basic React Typescript. The Components directory holds all the various components that facilitate a user in creation of a room or joining a live session room. The "tokbox.ts" file inside the "api" directory is responsible for fetching the API call from the Backend Application and forwarding its data to the caller component.</p>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<h2>Installation and Usage</h2>
+Follow the steps to get the project up and running on your local machine:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. Clone the Project from this repository. Always check for the latest publish.
+2. Create a ".env" file in the base directory of project and add your credentials and network port for the applciation in this format:
+```
+REACTAPP_TOKBOX_API_KEY=<Your tokbox account api key>
+REACTAPP_TOKBOX_API_SECRET=<Your tokbox account api secret>
+```
+3. Open the project base directory in terminal and run the following script:
+```
+npm install
+```
+this script should install all the dependecies of the project.
 
-### `npm test`
+4. To finally start the applciation, enter the following script:
+```
+npm start
+```
+The use of the application is farily straight forward.
+- To create a live session room, enter your name and a name for your room in the input fields and then click "Create Room"
+- To join a live session room, get the password from room creator and then enter your name and that password in the input fields and then click "Join Room"
+- Do allow your browser the permission to use your device's webcame and microphone when asked.
+- Enjoy the meeting ^^
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+For any information regarding the backend implementation, look up the following document: https://docs.google.com/document/d/15PdMSYtCIOYdDvwIO1zhQp47Jmnh1MyQDmfjUaYOrV0/edit?usp=sharing
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
