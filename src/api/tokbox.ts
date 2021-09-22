@@ -1,7 +1,7 @@
 import axios from "axios";
 import { CreateResponse, ErrorResponse } from "../types/tokbox";
 
-const opentokServerPath = 'http://localhost:4000/api/v1/room/';
+const opentokServerPath = 'https://live-session-backend-ts.herokuapp.com/api/v1/room/';
 
 function delay(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );

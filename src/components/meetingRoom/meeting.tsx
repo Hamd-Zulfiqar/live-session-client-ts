@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { withRouter } from "react-router";
 import {Container, Row, Col, Button, ButtonGroup, InputGroup, FormControl} from 'react-bootstrap';
 import { toast, ToastContainer } from 'react-toastify';
 import { OTSession, OTPublisher, OTStreams, OTSubscriber, OTPublisherRef } from 'opentok-react';
@@ -111,6 +112,11 @@ class Meeting extends React.Component <MyProps, MyState>{
     this.publisher.current?.getPublisher().publishVideo(this.state.settings.video);
   }
 
+  leaveMeeting = () => {
+    localStorage.clear();
+    //Redirect to home page here
+  }
+
   showAlert(flag: boolean, name?: string ) {
     if(flag){
       toast.success(name || "Success", {
@@ -182,6 +188,7 @@ class Meeting extends React.Component <MyProps, MyState>{
                 <ButtonGroup>
                   <Button onClick={this.toggleAudio}>Toggle Audio</Button>
                   <Button onClick={this.toggleVideo}>Toggle Video</Button>
+                  <Button onClick={this.leaveMeeting}>Leave Meeting</Button>
                 </ButtonGroup>
               </Row>
               <Row>
