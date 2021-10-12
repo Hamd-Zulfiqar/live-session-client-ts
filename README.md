@@ -33,12 +33,16 @@ npm start
 The use of the application is fairly straight forward.
 - Select a service provider
 - Choose the desired action (join room/ create room)
-For tokbox:
+
+<h4>For Tokbox</h4>
+
 - To create a live session room, enter your name and a name for your room in the input fields and then click "Create Room"
 - To join a live session room, get the password from room creator and then enter your name and that password in the input fields and then click "Join Room"
 - Do allow your browser the permission to use your device's webcame and microphone when asked.
-For twilio:
--To create room enter room name, your name
+
+<h4>For Twilio</h4>
+
+- To create room enter room name, your name
 - To join room enter room password (retrieved from console for now),room name and your name (Labels are given for convenience)
 - Enjoy the meeting ^^
 
