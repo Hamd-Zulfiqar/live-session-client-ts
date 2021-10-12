@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useRef } from "react";
+import React, { Component, useRef } from "react";
 import { withRouter, RouteComponentProps } from "react-router";
 import {
   Container,
@@ -9,7 +9,7 @@ import {
   InputGroup,
   FormControl,
 } from "react-bootstrap";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import {
   OTSession,
   OTPublisher,
@@ -18,9 +18,6 @@ import {
   OTPublisherRef,
   preloadScript,
   OTStreamsProps,
-  OTSubscriberRef,
-  SessionHelper,
-  createSession,
 } from "opentok-react";
 import {
   Publisher,
@@ -32,7 +29,6 @@ import {
   SubscriberProperties,
   SignalEvent,
   VideoElementCreatedEvent,
-  Stream,
 } from "opentok-react/types/opentok";
 import "./meeting.styles.scss";
 import "../home/home.css";
@@ -63,14 +59,9 @@ interface MyState {
   name: string;
   room: string;
   publisher: any;
-  subscriber: any;
-  subscribers: HTMLElement[];
-  streams: Stream[];
   settings: Settings;
   chat: Message[];
   mySession: Session | undefined;
-  rows: number;
-  cols: number;
 }
 
 class Meeting extends React.Component<MyCompProps, MyState> {
@@ -79,11 +70,9 @@ class Meeting extends React.Component<MyCompProps, MyState> {
   private subscriberProperties: SubscriberProperties;
   private subscriberEventHandlers: SubscriberEventHandlers;
   private sessionEventHandlers: SessionEventHandlers;
-  private sessionHelper: SessionHelper | null;
 
   private publisherParentRef;
   private subscriberParentRef;
-  private subscriber;
   private parentRef;
   private publisher;
   private session: any;
@@ -101,21 +90,12 @@ class Meeting extends React.Component<MyCompProps, MyState> {
 
     console.log(name, password);
 
-    this.sessionHelper = null;
-
     this.state = {
       session: session1,
       token: token,
       name: name,
       room: password,
       publisher: null,
-      subscriber: null,
-      subscribers: [],
-      streams: [],
-
-      rows: 1,
-      cols: 12,
-
       settings: {
         audio: true,
         video: true,
@@ -127,10 +107,8 @@ class Meeting extends React.Component<MyCompProps, MyState> {
     this.publisherParentRef = React.createRef<HTMLDivElement>();
     this.subscriberParentRef = React.createRef<HTMLDivElement>();
     this.parentRef = React.createRef<HTMLDivElement>();
-    this.subscriber = React.createRef<OTSubscriberRef>();
 
     this.publisher = React.createRef<OTPublisherRef>();
-
     this.session = null;
 
     this.sessionEventHandlers = {};
@@ -154,16 +132,9 @@ class Meeting extends React.Component<MyCompProps, MyState> {
           mySession: this.publisher.current?.getPublisher().session,
         });
 
-        this.parentRef.current
-          ?.querySelectorAll(".member")
-          .forEach((element) => {
-            if (element.parentElement)
-              element.firstElementChild?.classList.add("parent-attr");
-          });
-
-        // this.publisher.current
-        //   ?.getPublisher()
-        //   .element?.parentElement?.classList.add("parent-attr");
+        this.publisher.current
+          ?.getPublisher()
+          .element?.parentElement?.classList.add("parent-attr");
       },
       streamDestroyed: (event) => {
         console.log("Publisher stream destroyed!");
@@ -173,6 +144,20 @@ class Meeting extends React.Component<MyCompProps, MyState> {
       },
 
       videoElementCreated: (event) => {
+        // event.element.style.height = "100%";
+        // event.element.style.width = "100%";
+
+        const markup: string = `<Col className="column-custom col-sm-6 mx-auto d-flex justify-content-center flex-column align-items-center" ref={this.publisherParentRef}>
+        </Col>`;
+
+        console.log(markup);
+
+        // this.parentRef.current?.insertAdjacentHTML("afterbegin", markup);
+
+        // this.publisherParentRef.current?.insertAdjacentElement(
+        //   "afterbegin",
+        //   event.element
+        // );
         console.log("videoElement is created");
       },
     };
@@ -183,53 +168,26 @@ class Meeting extends React.Component<MyCompProps, MyState> {
     };
 
     this.subscriberEventHandlers = {
-      connected: (event) => {
-        this.parentRef.current
-          ?.querySelectorAll(".member")
-          .forEach((element) => {
-            if (element.parentElement)
-              element.firstElementChild?.classList.add("parent-attr");
-          });
-
-        const streamsLength = this.state.streams.length;
-
-        console.log(streamsLength)
-
-        if (streamsLength > 1 && streamsLength <= 5) {
-          this.setState({
-            rows: 2,
-          });
-        } else if (streamsLength > 5 && streamsLength <= 11) {
-          this.setState({
-            rows: 3,
-          });
-        } else if (streamsLength > 11 && streamsLength <= 15) {
-          this.setState({
-            rows: 4,
-          });
-        }
-
-        if(streamsLength>0 && streamsLength<4){
-          this.setState({
-            cols: 6
-          })
-        }
-        else if(streamsLength>=4 && streamsLength<9){
-          this.setState({
-            cols: 4
-          })
-        }
-        else if(streamsLength>=9 && streamsLength<16){
-          this.setState({
-            cols: 3
-          })
-        }
-      },
       videoDisabled: (event) => {
         console.log("Subscriber video disabled!");
       },
       videoEnabled: (event) => {
         console.log("Subscriber video enabled!");
+      },
+      videoElementCreated: (event) => {
+        event.element.style.height = "100%";
+        event.element.style.width = "100%";
+
+        const markup: string = `<Col className="column-custom col-sm-6 mx-auto d-flex justify-content-center flex-column align-items-center" ref={this.publisherParentRef}>
+        </Col>`;
+
+        this.parentRef.current?.insertAdjacentHTML("afterbegin", markup);
+
+        // this.subscriberParentRef.current?.insertAdjacentElement(
+        //   "afterbegin",
+        //   event.element
+        // );
+        console.log("videoElement is created");
       },
     };
     console.log(this.state);
@@ -295,24 +253,16 @@ class Meeting extends React.Component<MyCompProps, MyState> {
   };
 
   componentDidMount() {
-    this.sessionHelper = createSession({
-      apiKey: apiKey,
-      sessionId: this.state.session,
-      token: this.state.token,
-      onStreamsUpdated: (streams) => {
-        this.setState({ streams: streams });
-      },
-    });
     this.getPublisher();
+    // console.log(this.state.mySession);
   }
 
   componentWillUnmount() {
-    if (this.sessionHelper) this.sessionHelper.disconnect();
+    localStorage.clear();
   }
 
   getPublisher = () => {
-    // console.log(this.publisher.current?.getPublisher().session.connection.data);
-
+    // this.publisher.current?.getPublisher().element=this.parentRef.current?
     this.setState({
       publisher: this.publisher.current?.getPublisher(),
     });
@@ -321,80 +271,60 @@ class Meeting extends React.Component<MyCompProps, MyState> {
   render() {
     return (
       <div className="Room">
-        <Container fluid className="custom-container vh-100 vw-100">
-          <Row className="main-row">
-          <Col className="col-sm-12 col-1">
-           <Row className={`row-participants-level-${this.state.rows} mx-auto`} ref={this.parentRef}>
-            <Col
-              className={`member column-custom col-sm-${this.state.cols} mx-auto d-flex justify-content-center flex-column align-items-center`}
-            >
-              {this.sessionHelper ? (
+        {/* <ToastContainer /> */}
+        <OTSession
+          apiKey={apiKey}
+          sessionId={this.state.session}
+          token={this.state.token}
+          onConnect={() => {
+            console.log("Session.connect completed!");
+          }}
+          onError={() => {
+            console.log("Session.connect failed!");
+          }}
+        >
+          <Container fluid className="custom-container vh-100 vw-100">
+            {/* <h3 className="m-3">{this.state.room}</h3> */}
+
+            <Row className="row-participants" ref={this.parentRef}>
+              <Col className="column-custom col-sm-6 mx-auto d-flex justify-content-center flex-column align-items-center">
                 <OTPublisher
-                  ref={this.publisher}
-                  session={this.sessionHelper.session}
                   properties={{
-                    width: "100%",
+                    // insertDefaultUI: false,
+
                     height: "100%",
+                    width: "100%",
                   }}
                   eventHandlers={this.publisherEventHandlers}
+                  ref={this.publisher}
                 />
-              ) : null}
-            </Col>
-            {this.state.streams.map((stream) => {
-              return this.sessionHelper ? (
-                <Col className={`member column-custom col-sm-${this.state.cols} mx-auto d-flex justify-content-center flex-column align-items-center`}>
+              </Col>
+
+              {/* <Col className="column-custom col-sm-6 mx-auto d-flex justify-content-center flex-column align-items-center">
+                <OTStreams>
                   <OTSubscriber
                     properties={{
-                      width: "100%",
                       height: "100%",
+                      width: "100%",
                     }}
-                    ref={this.subscriber}
-                    key={stream.streamId}
-                    session={this.sessionHelper.session}
-                    stream={stream}
                     eventHandlers={this.subscriberEventHandlers}
                   />
-                </Col>
-              ) : null;
-            })}
-          </Row>
-          </Col>
-          <Col className="col-sm-12 col-2">
-          <div className=" d-flex justify-content-center flex-row align-items-center">
-          <div
-            className="action-buttons my-btn-group d-flex justify-content-center flex-row align-items-center"
-            role="group"
-            aria-label="Basic example"
-          >
-            <button
-              type="button"
-              className="btn btn-secondary rounded-circle custom-button"
-              onClick={this.toggleAudio}
-            >
-              <i className="fas fa-microphone icon-img"></i>
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary rounded-circle custom-button"
-              onClick={this.toggleVideo}
-            >
-              <i className="fas fa-video icon-img"></i>
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger rounded-circle custom-button"
-              onClick={this.leaveMeeting}
-            >
-              <i className="fas fa-phone-slash icon-img"></i>
-            </button>
-          </div>
-          </div>
-          </Col>
-          </Row>
-         
-          
-          
-        </Container>
+                </OTStreams>
+              </Col> */}
+
+              {/* <Row className="text-center justify-content-md-center">
+                  {/* <h2>Subscribers here</h2> */}
+              {/* <OTStreams>
+                    <OTSubscriber
+                      properties={this.subscriberProperties}
+                      eventHandlers={this.subscriberEventHandlers}
+                    />
+                  </OTStreams>
+                </Row>
+              </Col> */}
+            </Row>
+          </Container>
+        </OTSession>
       </div>
     );
   }

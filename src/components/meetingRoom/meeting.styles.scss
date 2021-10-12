@@ -1,0 +1,93 @@
+$dark-color: #202124;
+
+.Room {
+  background-color: $dark-color;
+}
+.column-custom {
+  background-color: $dark-color;
+  border: 2px solid #000;
+  height: 100%;
+}
+
+.row-participants-level-1 {
+  height: 100%;
+  width: 100%;
+}
+.row-participants-level-2 {
+  height: 50%;
+  width: 100%;
+}
+.row-participants-level-3 {
+  height: 33.3%;
+  width: 100%;
+}
+.row-participants-level-4 {
+  height: 25%;
+  width: 100%;
+}
+
+.action-bar {
+  background-color: $dark-color;
+  height: 10%;
+}
+
+.user-avatar {
+  width: 200px;
+  height: 200px;
+  background-color: #000;
+  border-radius: 100%;
+
+  h1 {
+    color: #fff;
+  }
+}
+
+.parent-attr {
+  width: 100%;
+  height: 100%;
+}
+
+.icon-img {
+  font-size: 1.5em;
+}
+
+
+
+.my-btn-group {
+  height: 10%;
+  width: 100%
+}
+
+.custom-button { 
+  width: 4em;
+  height: 80%;
+  margin: 1em;
+}
+
+.action-container{
+  height:10%;
+  width: 100%
+}
+
+.custom-container{
+  height: 90vh;
+  width: 100vw;
+}
+
+.action-buttons{
+  height: 10vh;
+  width: 100vw;
+}
+
+.col-1{
+  height: 90%
+}
+
+.col-2{
+  height: 10%;
+}
+
+.main-row{
+  height: 100%;
+  width: 100%;
+}

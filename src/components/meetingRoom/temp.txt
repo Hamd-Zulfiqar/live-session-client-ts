@@ -1,0 +1,43 @@
+ {/* <Col sm={4} className="outline-primary">
+                <h2 className="m-3">Live Chat</h2>
+                <div
+                  id="chatbox"
+                  className="container-half border border-primary"
+                >
+                  <p>Sender_Name: this is a template message</p>
+                </div>
+                <InputGroup className="mt-3 mb-3">
+                  <InputGroup.Text>Message:</InputGroup.Text>
+                  <FormControl
+                    aria-label="Type your massage here"
+                    id="message"
+                  />
+                  <Button
+                    variant="outline-primary"
+                    id="send"
+                    onClick={(event) => {
+                      console.log("Send Signal for Chat Message!");
+                    }}
+                  >
+                    Send
+                  </Button>
+                </InputGroup>
+              </Col> */}
+
+
+                    {/* <ButtonGroup>
+                    <Button onClick={this.toggleAudio}>Toggle Audio</Button>
+                    <Button onClick={this.toggleVideo}>Toggle Video</Button>
+                    <Button onClick={this.leaveMeeting}>Leave Meeting</Button>
+                  </ButtonGroup> */}
+
+
+                                  <Row className="text-center justify-content-md-center">
+                  {/* <h2>Subscribers here</h2> */}
+                  <OTStreams>
+                    <OTSubscriber
+                      properties={this.subscriberProperties}
+                      eventHandlers={this.subscriberEventHandlers}
+                    />
+                  </OTStreams>
+                </Row>
